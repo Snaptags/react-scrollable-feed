@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
 import ScrollableFeed from 'react-scrollable-feed';
+import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
+import 'react-vertical-timeline-component/style.min.css';
 
 export default class App extends Component {
 
@@ -37,11 +39,22 @@ export default class App extends Component {
     }));
   }
 
+    renderElement(index, content) {
+        return (
+            <VerticalTimelineElement
+                key={index}
+                position="right"
+            >
+                {content}
+            </VerticalTimelineElement>
+        );
+    }
+
   render() {
     const { items } = this.state;
     return (
       <section>
-        <div className={'scrollable-wrapper'}>
+        <div className={'scrollable-wrapper'} style={{backgroundColor:"#d0d0d0"}}>
           <ScrollableFeed
             changeDetectionFilter={(previousProps, newProps) => {
               const prevChildren = previousProps.children;
@@ -51,7 +64,12 @@ export default class App extends Component {
                 && prevChildren[prevChildren.length - 1] !== newChildren[newChildren.length - 1];
             }}
           >
-            {items.map((item, i) => <div key={i}>{item}</div>)}
+                    <VerticalTimeline
+                        animate={false}
+                        layout="1-column"
+                    >
+                        {items.map((item, i) => this.renderElement(i, item))}
+                    </VerticalTimeline>
           </ScrollableFeed>
         </div>
         <div className={'text-center'}>
